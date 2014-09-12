@@ -6,7 +6,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 public class Lab3Client {
-	
+
 	public static void main(String args[]) throws IOException, ScriptException {
 		InetAddress i;
 		// ScriptEngine, found documentation on stackOverflow, will evaluate
@@ -20,8 +20,10 @@ public class Lab3Client {
 			return;
 		}
 		try {
+			// set up the socket
 			int port = Integer.parseInt(args[1]);
 			Socket sock = new Socket(i, port);
+			// set up the input and output streams
 			PrintWriter out = new PrintWriter(sock.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					sock.getInputStream()));
@@ -29,12 +31,13 @@ public class Lab3Client {
 			System.out.println("Requesting work from server");
 			out.println("GET WORK");
 			System.out.println("Server: " + in.readLine());
-
+			// read math problem and evaluate
 			String ques = in.readLine();
 			System.out.println("Server: " + ques);
 			Object answer = engine.eval(ques);
 			System.out.println("Sending answer back to server: " + answer);
 
+			// sending answer back to server
 			out.println("PUT ANSWER");
 			out.println(answer);
 			System.out.println("Server: " + in.readLine());
