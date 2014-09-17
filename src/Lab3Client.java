@@ -27,10 +27,16 @@ public class Lab3Client {
 			PrintWriter out = new PrintWriter(sock.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					sock.getInputStream()));
-
+			String s = "";
+			while (true){
 			System.out.println("Requesting work from server");
 			out.println("GET WORK");
-			System.out.println("Server: " + in.readLine());
+			if ((s = in.readLine()).contains("NONE")){
+				System.out.println("No work left on server, terminating");
+				break;				
+			}
+				
+			System.out.println("Server: " + s);
 			// read math problem and evaluate
 			String ques = in.readLine();
 			System.out.println("Server: " + ques);
@@ -41,6 +47,7 @@ public class Lab3Client {
 			out.println("PUT ANSWER");
 			out.println(answer);
 			System.out.println("Server: " + in.readLine());
+			}
 			sock.close();
 		} catch (SocketException e) {
 			System.out.println("Could not connect to server.");

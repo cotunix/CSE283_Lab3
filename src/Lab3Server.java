@@ -5,6 +5,8 @@ public class Lab3Server {
 	public static final int PORT = 4444;
 
 	public static void main(String args[]) throws IOException {
+		while (true) {
+			
 		ServerSocket sock;
 		int complete = 0;
 		try {
@@ -29,7 +31,7 @@ public class Lab3Server {
 				switch (input) {
 				case ("GET WORK"): {
 					System.out.println("Client requesting AMP");
-					if (complete == 0) {
+					if (complete < Integer.parseInt(args[0])) {
 						out.println("AMP WORK");
 						String operation = "";
 						switch ((int) Math.round(Math.random() * 3)) {
@@ -51,15 +53,17 @@ public class Lab3Server {
 						System.out.println("Sending client AMP: " + op1 + " "
 								+ operation + " " + op2);
 						out.println(op1 + " " + operation + " " + op2);
-					} else
+					} else {
 						System.out.println("No work Available for client.");
-					out.println("AMP NONE");
-
+						out.println("AMP NONE");
+					}
 					break;
 				}
 				case ("PUT ANSWER"): {
 					System.out.println("Answer:" + in.readLine());
+
 					out.println("AMP OK");
+					complete++;
 
 					break;
 				}
@@ -81,7 +85,8 @@ public class Lab3Server {
 		clientSock.close();
 		sock.close();
 		System.out.println("Connection terminated, restarting.");
-		main(new String[0]);
+		}
+		
 	}
 
 }
